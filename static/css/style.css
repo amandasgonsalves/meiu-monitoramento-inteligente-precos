@@ -1,0 +1,72 @@
+/* Estilos personalizados para o sistema de monitoramento de preços */
+
+body {
+    background-color: #f8f9fa;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: #e7f1ff;
+    color: #0d6efd;
+}
+
+.card-header {
+    font-weight: bold;
+}
+
+.navbar-brand {
+    font-weight: bold;
+}
+
+.result-card {
+    transition: transform 0.3s;
+}
+
+.result-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.price-highlight {
+    font-weight: bold;
+    color: #dc3545;
+}
+
+.store-badge {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.nav-tabs .nav-link.active {
+    font-weight: bold;
+    border-bottom: 3px solid #0d6efd;
+}
+
+.summary-card {
+    background-color: #f8f9fa;
+    border-left: 4px solid #0d6efd;
+}
+
+@media (max-width: 576px) {
+    .container {
+        padding: 0;
+    }
+    
+    .table-responsive {
+        margin: 0 -15px;
+    }
+}

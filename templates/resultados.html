@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados da Busca - Sistema de Monitoramento de Preços</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container my-4">
+        <h1 class="text-center mb-4">Resultados da Busca</h1>
+        
+        <div class="mb-4">
+            <a href="/" class="btn btn-outline-secondary mb-4">← Voltar para Busca</a>
+            
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Resumo da Busca</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Início:</strong> {{ resumo.inicio }}</p>
+                            <p><strong>Fim:</strong> {{ resumo.fim }}</p>
+                            <p><strong>Tempo Total:</strong> {{ resumo.tempo_total_minutos|round(2) }} minutos</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Total de Produtos Buscados:</strong> {{ resumo.total_produtos_buscados }}</p>
+                            <p><strong>Buscas com Sucesso:</strong> {{ resumo.buscas_sucessos }}</p>
+                            <p><strong>Total de Produtos Encontrados:</strong> {{ resumo.total_produtos_encontrados }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion" id="accordionResultados">
+            {% for produto, dados in resultados_detalhados.items() %}
+            <div class="accordion-item mb-3 border">
+                <h2 class="accordion-header" id="heading{{ loop.index }}">
+                    <button class="accordion-button {{ 'collapsed' if not loop.first else '' }}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ loop.index }}" aria-expanded="{{ 'true' if loop.first else 'false' }}" aria-controls="collapse{{ loop.index }}">
+                        <strong>{{ dados.produto_buscado }}</strong>
+                        <span class="badge bg-primary ms-3">{{ dados.produtos_patrocinados|length }} produtos encontrados</span>
+                    </button>
+                </h2>
+                <div id="collapse{{ loop.index }}" class="accordion-collapse collapse {{ 'show' if loop.first else '' }}" aria-labelledby="heading{{ loop.index }}" data-bs-parent="#accordionResultados">
+                    <div class="accordion-body">
+                        <p class="text-muted">Pesquisa realizada em: {{ dados.timestamp }}</p>
+                        
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Nome</th>
+                                        <th>Preço</th>
+                                        <th>Loja</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in dados.produtos_patrocinados %}
+                                    <tr>
+                                        <td>{{ loop.index }}</td>
+                                        <td>{{ item.nome }}</td>
+                                        <td class="text-nowrap">{{ item.preco }}</td>
+                                        <td>{{ item.loja }}</td>
+                                        <td><a href="{{ item.link }}" target="_blank" class="btn btn-sm btn-outline-primary">Ver Produto</a></td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
