@@ -16,7 +16,7 @@ from queue import Queue
 try:
     from main import main as buscar_produtos_patrocinados
 except ImportError:
-    print("❌ Erro: Não foi possível importar o script 'main.py'")
+    print(" Erro: Não foi possível importar o script 'main.py'")
     print("Certifique-se de que o arquivo está no mesmo diretório.")
     sys.exit(1)
 
@@ -30,7 +30,7 @@ class MultiBuscador:
         
     def buscar_produto_com_tempo(self, produto, thread_id):
         """Executa uma busca individual e mede o tempo"""
-        print(f"🚀 [Thread {thread_id}] Iniciando busca: '{produto}'")
+        print(f" [Thread {thread_id}] Iniciando busca: '{produto}'")
         inicio_produto = time.time()
         
         try:
@@ -44,7 +44,7 @@ class MultiBuscador:
                 self.resultados[produto] = resultado
                 self.tempos_individuais[produto] = tempo_gasto
             
-            print(f"✅ [Thread {thread_id}] Concluída busca: '{produto}' ({tempo_gasto:.2f}s)")
+            print(f" [Thread {thread_id}] Concluída busca: '{produto}' ({tempo_gasto:.2f}s)")
             return {
                 'produto': produto,
                 'resultado': resultado,
@@ -65,7 +65,7 @@ class MultiBuscador:
                     'produtos_patrocinados': []
                 }
             
-            print(f"❌ [Thread {thread_id}] Erro na busca '{produto}': {e} ({tempo_gasto:.2f}s)")
+            print(f" [Thread {thread_id}] Erro na busca '{produto}': {e} ({tempo_gasto:.2f}s)")
             return {
                 'produto': produto,
                 'resultado': None,
@@ -78,11 +78,11 @@ class MultiBuscador:
     def executar_buscas_simultaneas(self, produtos, max_threads=3):
         """Executa múltiplas buscas simultaneamente"""
         print("="*70)
-        print("🔍 INICIANDO BUSCAS SIMULTÂNEAS NO GOOGLE SHOPPING")
+        print(" INICIANDO BUSCAS SIMULTÂNEAS NO GOOGLE SHOPPING")
         print("="*70)
-        print(f"📋 Produtos para buscar: {len(produtos)}")
-        print(f"🧵 Threads simultâneas: {max_threads}")
-        print(f"⏰ Início: {datetime.now().strftime('%H:%M:%S')}")
+        print(f" Produtos para buscar: {len(produtos)}")
+        print(f" Threads simultâneas: {max_threads}")
+        print(f" Início: {datetime.now().strftime('%H:%M:%S')}")
         print("-"*70)
         
         self.inicio_geral = time.time()
@@ -118,10 +118,10 @@ class MultiBuscador:
     def executar_buscas_sequenciais(self, produtos):
         """Executa buscas uma por vez (para comparação)"""
         print("="*70)
-        print("🔍 INICIANDO BUSCAS SEQUENCIAIS NO GOOGLE SHOPPING")
+        print(" INICIANDO BUSCAS SEQUENCIAIS NO GOOGLE SHOPPING")
         print("="*70)
-        print(f"📋 Produtos para buscar: {len(produtos)}")
-        print(f"⏰ Início: {datetime.now().strftime('%H:%M:%S')}")
+        print(f" Produtos para buscar: {len(produtos)}")
+        print(f" Início: {datetime.now().strftime('%H:%M:%S')}")
         print("-"*70)
         
         self.inicio_geral = time.time()
@@ -152,14 +152,14 @@ class MultiBuscador:
                 produtos_encontrados_total += len(self.resultados[produto].get('produtos_patrocinados', []))
         
         print("\n" + "="*70)
-        print("📊 RELATÓRIO FINAL DE BUSCAS")
+        print(" RELATÓRIO FINAL DE BUSCAS")
         print("="*70)
-        print(f"⏱️  Tempo total gasto: {tempo_total:.2f} segundos ({tempo_total/60:.1f} minutos)")
-        print(f"📈 Tempo médio por busca: {tempo_medio:.2f} segundos")
-        print(f"✅ Buscas bem-sucedidas: {buscas_sucessos}/{len(produtos)}")
-        print(f"❌ Buscas falharam: {buscas_falharam}/{len(produtos)}")
-        print(f"🛍️  Total de produtos encontrados: {produtos_encontrados_total}")
-        print(f"📅 Finalizado em: {datetime.now().strftime('%H:%M:%S')}")
+        print(f"  Tempo total gasto: {tempo_total:.2f} segundos ({tempo_total/60:.1f} minutos)")
+        print(f" Tempo médio por busca: {tempo_medio:.2f} segundos")
+        print(f" Buscas bem-sucedidas: {buscas_sucessos}/{len(produtos)}")
+        print(f" Buscas falharam: {buscas_falharam}/{len(produtos)}")
+        print(f"  Total de produtos encontrados: {produtos_encontrados_total}")
+        print(f" Finalizado em: {datetime.now().strftime('%H:%M:%S')}")
         
         print("\n" + "="*70)
         print("⏱️  TEMPOS INDIVIDUAIS POR PRODUTO")
@@ -198,29 +198,29 @@ class MultiBuscador:
         try:
             with open(nome_arquivo, 'w', encoding='utf-8') as f:
                 json.dump(relatorio_completo, f, indent=2, ensure_ascii=False)
-            print(f"\n💾 Relatório completo salvo em: {nome_arquivo}")
+            print(f"\n Relatório completo salvo em: {nome_arquivo}")
         except Exception as e:
-            print(f"\n❌ Erro ao salvar relatório: {e}")
+            print(f"\n Erro ao salvar relatório: {e}")
         
         return relatorio_completo
 
 def comparar_tempos_sequencial_vs_paralelo(produtos, max_threads=3):
     """Compara execução sequencial vs paralela"""
-    print("🔬 INICIANDO COMPARAÇÃO: SEQUENCIAL vs PARALELO")
+    print(" INICIANDO COMPARAÇÃO: SEQUENCIAL vs PARALELO")
     print("="*70)
     
     # Teste sequencial
     buscador_seq = MultiBuscador()
-    print("1️⃣ Executando buscas SEQUENCIAIS...")
+    print(" Executando buscas SEQUENCIAIS...")
     relatorio_seq = buscador_seq.executar_buscas_sequenciais(produtos)
     tempo_sequencial = relatorio_seq['resumo']['tempo_total_segundos']
     
-    print("\n" + "⏳ Aguardando 10 segundos entre testes...\n")
+    print("\n" + " Aguardando 10 segundos entre testes...\n")
     time.sleep(10)
     
     # Teste paralelo
     buscador_par = MultiBuscador()
-    print("2️⃣ Executando buscas PARALELAS...")
+    print(" Executando buscas PARALELAS...")
     relatorio_par = buscador_par.executar_buscas_simultaneas(produtos, max_threads)
     tempo_paralelo = relatorio_par['resumo']['tempo_total_segundos']
     
@@ -229,17 +229,17 @@ def comparar_tempos_sequencial_vs_paralelo(produtos, max_threads=3):
     percentual_melhoria = (economia_tempo / tempo_sequencial) * 100 if tempo_sequencial > 0 else 0
     
     print("\n" + "="*70)
-    print("🏆 COMPARAÇÃO FINAL")
+    print(" COMPARAÇÃO FINAL")
     print("="*70)
-    print(f"⏱️  Tempo sequencial: {tempo_sequencial:.2f}s ({tempo_sequencial/60:.1f}min)")
-    print(f"🚀 Tempo paralelo:   {tempo_paralelo:.2f}s ({tempo_paralelo/60:.1f}min)")
-    print(f"💨 Economia de tempo: {economia_tempo:.2f}s ({economia_tempo/60:.1f}min)")
-    print(f"📈 Melhoria:          {percentual_melhoria:.1f}%")
+    print(f"  Tempo sequencial: {tempo_sequencial:.2f}s ({tempo_sequencial/60:.1f}min)")
+    print(f" Tempo paralelo:   {tempo_paralelo:.2f}s ({tempo_paralelo/60:.1f}min)")
+    print(f" Economia de tempo: {economia_tempo:.2f}s ({economia_tempo/60:.1f}min)")
+    print(f" Melhoria:          {percentual_melhoria:.1f}%")
     
     if economia_tempo > 0:
-        print(f"✅ Execução paralela foi {percentual_melhoria:.1f}% mais rápida!")
+        print(f" Execução paralela foi {percentual_melhoria:.1f}% mais rápida!")
     else:
-        print("⚠️ Execução sequencial foi mais rápida (possível overhead de threads)")
+        print(" Execução sequencial foi mais rápida (possível overhead de threads)")
 
 def carregar_produtos_do_arquivo(caminho_arquivo):
     """Carrega lista de produtos de um arquivo TXT (um produto por linha)"""
@@ -252,17 +252,17 @@ def carregar_produtos_do_arquivo(caminho_arquivo):
                     produtos.append(produto)
         
         if not produtos:
-            print(f"⚠️ Arquivo '{caminho_arquivo}' está vazio ou não contém produtos válidos.")
+            print(f" Arquivo '{caminho_arquivo}' está vazio ou não contém produtos válidos.")
             return None
             
-        print(f"✅ Carregados {len(produtos)} produtos do arquivo '{caminho_arquivo}'")
+        print(f" Carregados {len(produtos)} produtos do arquivo '{caminho_arquivo}'")
         return produtos
         
     except FileNotFoundError:
-        print(f"❌ Arquivo não encontrado: '{caminho_arquivo}'")
+        print(f" Arquivo não encontrado: '{caminho_arquivo}'")
         return None
     except Exception as e:
-        print(f"❌ Erro ao ler arquivo '{caminho_arquivo}': {e}")
+        print(f" Erro ao ler arquivo '{caminho_arquivo}': {e}")
         return None
 
 def main():
@@ -277,7 +277,7 @@ def main():
 ]
 
     
-    print("🛍️ SISTEMA DE BUSCAS MÚLTIPLAS - GOOGLE SHOPPING")
+    print(" SISTEMA DE BUSCAS MÚLTIPLAS - GOOGLE SHOPPING")
     print("="*70)
     print("Escolha uma opção:")
     print("1 - Executar buscas SIMULTÂNEAS (mais rápido)")
@@ -344,13 +344,13 @@ def main():
             comparar_tempos_sequencial_vs_paralelo(produtos_para_buscar, max_threads)
             
         else:
-            print("❌ Opção inválida!")
+            print(" Opção inválida!")
             return
             
     except KeyboardInterrupt:
         print("\n\n⏹️ Operação cancelada pelo usuário.")
     except Exception as e:
-        print(f"\n❌ Erro inesperado: {e}")
+        print(f"\n Erro inesperado: {e}")
 
 if __name__ == "__main__":
     main()

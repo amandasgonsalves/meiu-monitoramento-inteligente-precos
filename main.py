@@ -19,7 +19,7 @@ def configurar_driver():
     """Configura e retorna o driver do Chrome com opções otimizadas - MODO INVISÍVEL"""
     chrome_options = Options()
     
-    # 🔥 CONFIGURAÇÕES PARA MODO INVISÍVEL (HEADLESS)
+    # CONFIGURAÇÕES PARA MODO INVISÍVEL (HEADLESS)
     chrome_options.add_argument("--headless=new")  # Modo invisível mais moderno
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
@@ -43,7 +43,7 @@ def configurar_driver():
     
     # Método 1: Usar WebDriver Manager (recomendado para compatibilidade)
     try:
-        print("🔍 Configurando Chrome invisível com WebDriver Manager...")
+        print(" Configurando Chrome invisível com WebDriver Manager...")
         service = Service(ChromeDriverManager().install())
         driver = webdriver.Chrome(service=service, options=chrome_options)
         return driver
@@ -52,7 +52,7 @@ def configurar_driver():
     
     # Método 2: Usar método direto do Chrome (Windows)
     try:
-        print("🔍 Última tentativa - Chrome invisível com configurações específicas...")
+        print(" Última tentativa - Chrome invisível com configurações específicas...")
         driver = webdriver.Chrome(options=chrome_options)
         return driver
     except Exception as e:
@@ -67,7 +67,7 @@ def buscar_produtos_patrocinados(produto, max_tentativas=2):
     for tentativa in range(max_tentativas):
         driver = None
         try:
-            print(f"📡 Tentativa {tentativa + 1} de {max_tentativas}")
+            print(f" Tentativa {tentativa + 1} de {max_tentativas}")
             driver = configurar_driver()
             
             resultados = {
@@ -76,13 +76,13 @@ def buscar_produtos_patrocinados(produto, max_tentativas=2):
                 "produtos_patrocinados": []
             }
             
-            print(f"🌐 Acessando Google Shopping...")
+            print(f" Acessando Google Shopping...")
             driver.get("https://www.google.com/shopping?hl=pt-BR")
             
             # Aguarda a página carregar com timeout maior
             wait = WebDriverWait(driver, 20)
             
-            print(f"🔍 Procurando campo de busca...")
+            print(f" Procurando campo de busca...")
             # Tenta diferentes seletores para o campo de busca
             campo_busca = None
             seletores_busca = ["#APjFqb", "input[name='q']", "input[type='search']"]
@@ -97,7 +97,7 @@ def buscar_produtos_patrocinados(produto, max_tentativas=2):
             if not campo_busca:
                 raise Exception("Campo de busca não encontrado")
             
-            print(f"📝 Digitando: {produto}")
+            print(f" Digitando: {produto}")
             campo_busca.clear()
             time.sleep(1)
             
@@ -109,10 +109,10 @@ def buscar_produtos_patrocinados(produto, max_tentativas=2):
             time.sleep(2)
             campo_busca.send_keys(Keys.ENTER)
             
-            print("⏳ Aguardando resultados carregarem...")
+            print(" Aguardando resultados carregarem...")
             time.sleep(8)  # Aumentado o tempo de espera
             
-            print("🎯 Procurando produtos patrocinados...")
+            print(" Procurando produtos patrocinados...")
             
             # Tenta diferentes padrões de produtos
             produtos_encontrados = []
@@ -128,14 +128,14 @@ def buscar_produtos_patrocinados(produto, max_tentativas=2):
                 elementos = driver.find_elements(By.CSS_SELECTOR, seletor)
                 if elementos:
                     produtos_encontrados = elementos
-                    print(f"✅ Encontrados {len(elementos)} elementos com seletor: {seletor}")
+                    print(f" Encontrados {len(elementos)} elementos com seletor: {seletor}")
                     break
             
             if not produtos_encontrados:
-                print("⚠️ Nenhum produto encontrado, tentando busca mais ampla...")
+                print(" Nenhum produto encontrado, tentando busca mais ampla...")
                 produtos_encontrados = driver.find_elements(By.CSS_SELECTOR, "div[data-hveid], div[data-ved]")
             
-            print(f"📦 Processando {len(produtos_encontrados)} elementos...")
+            print(f" Processando {len(produtos_encontrados)} elementos...")
             
             for i, produto_elem in enumerate(produtos_encontrados[:20]):
                 try:
@@ -149,9 +149,9 @@ def buscar_produtos_patrocinados(produto, max_tentativas=2):
             return resultados
             
         except Exception as e:
-            print(f"❌ Erro na tentativa {tentativa + 1}: {e}")
+            print(f" Erro na tentativa {tentativa + 1}: {e}")
             if tentativa < max_tentativas - 1:
-                print("🔄 Tentando novamente em 5 segundos...")
+                print(" Tentando novamente em 5 segundos...")
                 time.sleep(5)
         finally:
             if driver:
@@ -572,7 +572,7 @@ def main(produto_busca):
             print(f"Link: {produto_info.get('link', 'N/A')}")
             print("-" * 40)
     else:
-        print("\n❌ Nenhum produto patrocinado foi encontrado.")
+        print("\n Nenhum produto patrocinado foi encontrado.")
         print("Isso pode acontecer se:")
         print("- Não há produtos patrocinados para este termo")
         print("- O Google mudou a estrutura da página")
@@ -580,7 +580,7 @@ def main(produto_busca):
     
     nome_arquivo = f"C:\\Users\\amand\\meiu\\monitoramento-inteligente-precos\\resultados\\resultado_{produto_busca.replace(' ', '_').lower().replace('/', '_')}.json"
     if salvar_resultados(resultados, nome_arquivo):
-        print(f"\n✅ Busca concluída! Verifique o arquivo '{nome_arquivo}' para todos os resultados.")
+        print(f"\n Busca concluída! Verifique o arquivo '{nome_arquivo}' para todos os resultados.")
     
     return resultados
 
